@@ -2,7 +2,7 @@
 
 The original code is from [here](https://github.com/lukaslangrock/ShutdownTimerClassic)
 
-Shutdown Timer is a Windows GUI application that allows you to set a timer that will shutdown, restart, hibernate, sleep,  lock your PC or execute custom command.
+Shutdown Timer is a Windows GUI application that allows you to set a timer that will shutdown, restart, hibernate, sleep, logout, lock your PC or execute custom command.
 
 ![Screenshot of the main menu](media/screenshots/Menu.png)
 
