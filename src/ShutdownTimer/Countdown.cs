@@ -739,7 +739,7 @@ namespace ShutdownTimer
             else if (UI && WindowState == FormWindowState.Minimized)
             {
                 // Window is hidden when UI is set to foreground operation
-                HideUI();
+                //HideUI();
             }
 
             // Update UI
