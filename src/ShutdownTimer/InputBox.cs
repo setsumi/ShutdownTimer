@@ -18,6 +18,7 @@ namespace ShutdownTimer
 
         private void InputBox_Load(object sender, EventArgs e)
         {
+            Tag = 0;
             Text = Title;
             titleLabel.Text = Title;
             messageLabel.Text = Message;
@@ -26,6 +27,7 @@ namespace ShutdownTimer
 
         private void OkButton_Click(object sender, EventArgs e)
         {
+            Tag = 1;
             this.ReturnValue = inputTextBox.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -33,13 +35,14 @@ namespace ShutdownTimer
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
+            Tag = 1;
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
         private void InputBox_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            if (Tag == (object)0) this.DialogResult = DialogResult.Cancel;
         }
     }
 }

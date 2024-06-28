@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using ShutdownTimer.Helpers;
 
 namespace ShutdownTimer.Helpers
 {
@@ -75,7 +74,6 @@ namespace ShutdownTimer.Helpers
               0U, IntPtr.Zero, IntPtr.Zero);
         }
 
-        public static void Shutdown() { Shutdown(false); }
         public static void Shutdown(bool force)
         {
             GetPrivileges();
@@ -84,7 +82,6 @@ namespace ShutdownTimer.Helpers
               (uint)(force ? (SettingsProvider.Settings.ForceIfHungFlag ? EWX_FORCEIFHUNG : EWX_FORCE) : 0) | EWX_POWEROFF, SHTDN_REASON_FLAG_PLANNED);
         }
 
-        public static void Reboot() { Reboot(false); }
         public static void Reboot(bool force)
         {
             GetPrivileges();
@@ -93,7 +90,6 @@ namespace ShutdownTimer.Helpers
               (uint)(force ? (SettingsProvider.Settings.ForceIfHungFlag ? EWX_FORCEIFHUNG : EWX_FORCE) : 0), SHTDN_REASON_FLAG_PLANNED);
         }
 
-        public static void LogOff() { LogOff(false); }
         public static void LogOff(bool force)
         {
             GetPrivileges();

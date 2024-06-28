@@ -15,6 +15,12 @@ namespace ShutdownTimer
         private void Settings_Load(object sender, EventArgs e)
         {
             appLabel.Text = Application.ProductName + "@v" + Application.ProductVersion.Remove(Application.ProductVersion.LastIndexOf("."));
+            infoToolTip.SetToolTip(forceIfHungFlagRadioButton, "Forces processes to terminate if they do not respond " +
+                "\nto the WM_QUERYENDSESSION or WM_ENDSESSION \nmessage within the timeout interval.");
+            infoToolTip.SetToolTip(forceFlagRadioButton, "This flag has no effect if terminal services is " +
+                "\nenabled. Otherwise, the system does not send \nthe WM_QUERYENDSESSION message. This can " +
+                "\ncause applications to lose data. Therefore, you \nshould only use this flag in an emergency.");
+
             LoadSettings();
         }
 
@@ -63,8 +69,8 @@ namespace ShutdownTimer
             secondsNumericUpDown.Value = SettingsProvider.Settings.DefaultTimer.Seconds;
 
             // advanced settings
-            forceIfHungFlagRadioButton.Checked = !SettingsProvider.Settings.ForceIfHungFlag;
-            forceFlagRadioButton.Checked = SettingsProvider.Settings.ForceIfHungFlag;
+            forceIfHungFlagRadioButton.Checked = SettingsProvider.Settings.ForceIfHungFlag;
+            forceFlagRadioButton.Checked = !SettingsProvider.Settings.ForceIfHungFlag;
             disableAlwaysOnTopCheckBox.Checked = SettingsProvider.Settings.DisableAlwaysOnTop;
             disableAnimationsCheckBox.Checked = SettingsProvider.Settings.DisableAnimations;
             disableNotificationsCheckBox.Checked = SettingsProvider.Settings.DisableNotifications;
@@ -96,7 +102,7 @@ namespace ShutdownTimer
             }
 
             // advanced settings
-            SettingsProvider.Settings.ForceIfHungFlag = forceFlagRadioButton.Checked;
+            SettingsProvider.Settings.ForceIfHungFlag = forceIfHungFlagRadioButton.Checked;
             SettingsProvider.Settings.DisableAlwaysOnTop = disableAlwaysOnTopCheckBox.Checked;
             SettingsProvider.Settings.DisableAnimations = disableAnimationsCheckBox.Checked;
             SettingsProvider.Settings.DisableNotifications = disableNotificationsCheckBox.Checked;
@@ -112,37 +118,7 @@ namespace ShutdownTimer
 
         private void GithubLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/lukaslangrock/ShutdownTimerClassic");
-        }
-
-        private void AppLicenseLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/lukaslangrock/ShutdownTimerClassic/blob/master/LICENSE");
-        }
-
-        private void AppSourceLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/lukaslangrock/ShutdownTimerClassic");
-        }
-
-        private void FALicenseLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://fontawesome.com/license/free");
-        }
-
-        private void FASourceLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/FortAwesome/Font-Awesome");
-        }
-
-        private void GithubButton_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/lukaslangrock/ShutdownTimerClassic/issues");
-        }
-
-        private void EmailButton_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("mailto:lukas.langrock@mailbox.org");
+            System.Diagnostics.Process.Start("https://github.com/setsumi/ShutdownTimer");
         }
 
         private void ForceFlagDocsLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

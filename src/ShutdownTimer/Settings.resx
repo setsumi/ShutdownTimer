@@ -117,17 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="aboutRichTextBox.Text" xml:space="preserve">
-    <value>This app is a free open-source project by Lukas Langrock under the MIT license which means there is no warranty provided and I shall not be held liable for any kind of damage!
-After all you may lose unsaved work or mess up another running application. Use this with caution and common sense!
-
-The application is built to be reliable and should accurately measure and count time. I can't exactly guarantee this but I aim to get the application to be as stable and polished as possible.
-In the case you encounter an error or notice the application not working as it should, an issue on GitHub or an Email would be very appreciated so I can fix the mistake.
-
-If you enjoy using this free app, please consider writing a review on the Microsoft Store or starring the project on GitHub.
-Any contributions in the form of issues and PR's are very welcome. If you don't have a GitHub account, you can also write me an Email.
-</value>
-  </data>
+  <metadata name="infoToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

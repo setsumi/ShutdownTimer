@@ -64,15 +64,23 @@ namespace ShutdownTimer
                 }
             }
 
-            // Set trayIcon icon to the opposite of the selected theme
-            bool lighttheme;
+            // Set tray icon
+            if (SettingsProvider.Settings.TrayIconTheme == "Default")
+            {
+                notifyIcon.Icon = this.Icon;
+            }
+            else
+            {
+                // Set trayIcon icon to the opposite of the selected theme
+                bool lighttheme;
 
-            if (SettingsProvider.Settings.TrayIconTheme == "Light") { lighttheme = true; }
-            else if (SettingsProvider.Settings.TrayIconTheme == "Dark") { lighttheme = false; }
-            else { lighttheme = WindowsAPIs.GetWindowsLightTheme(); }
+                if (SettingsProvider.Settings.TrayIconTheme == "Light") { lighttheme = true; }
+                else if (SettingsProvider.Settings.TrayIconTheme == "Dark") { lighttheme = false; }
+                else { lighttheme = WindowsAPIs.GetWindowsLightTheme(); }
 
-            // When the dark theme is selected we are using the light icon to generate contrast (and vise versa), you wouldn't want a white icon on a white background.
-            notifyIcon.Icon = lighttheme ? Properties.Resources.icon_dark : Properties.Resources.icon_light;
+                // When the dark theme is selected we are using the light icon to generate contrast (and vise versa), you wouldn't want a white icon on a white background.
+                notifyIcon.Icon = lighttheme ? Properties.Resources.icon_dark : Properties.Resources.icon_light;
+            }
 
             // Load password and set the lock state
             if (!String.IsNullOrEmpty(Password))
@@ -86,6 +94,18 @@ namespace ShutdownTimer
 
             TopMost = !SettingsProvider.Settings.DisableAlwaysOnTop;
 
+            // Show or hide command text
+            if (!string.IsNullOrEmpty(Command))
+            {
+                commandLabel.Text = Command;
+            }
+            else
+            {
+                timeLabel.Top = 0;
+                timeLabel.Height = timeLabel.Height + commandLabel.Height;
+                commandLabel.Text = "";
+            }
+
             if (!UI)
             {
                 ignoreClose = true; // Disable close dialogs and ignore closing from form
@@ -94,8 +114,10 @@ namespace ShutdownTimer
                 WindowState = FormWindowState.Minimized;
                 timerUIHideMenuItem.Enabled = false;
                 timerUIShowMenuItem.Enabled = true;
-                notifyIcon.BalloonTipText = "Timer started. The power action will be executed in " + CountdownTimeSpan.Hours + " hours, " + CountdownTimeSpan.Minutes + " minutes and " + CountdownTimeSpan.Seconds + " seconds.";
-                notifyIcon.ShowBalloonTip(10000);
+                notifyIcon.BalloonTipText = "Timer started. Action will be executed in " + CountdownTimeSpan.Hours +
+                    " hours, " + CountdownTimeSpan.Minutes + " minutes and " + CountdownTimeSpan.Seconds + " seconds." +
+                    "\n\nRight-click the tray icon for more info.";
+                notifyIcon.ShowBalloonTip(20000);
                 Hide();
             }
 
@@ -126,7 +148,7 @@ namespace ShutdownTimer
             if (PreventSystemSleep)
             {
                 ExceptionHandler.LogEvent("[Countdown] Executing sleep prevention by setting the EXECUTION_STATE flags");
-                ExecutionState.SetThreadExecutionState(ExecutionState.EXECUTION_STATE.ES_CONTINUOUS | ExecutionState.EXECUTION_STATE.ES_SYSTEM_REQUIRED);
+                ExecutionState.SetThreadExecutionState(ExecutionState.EXECUTION_STATE.ES_CONTINUOUS | ExecutionState.EXECUTION_STATE.ES_SYSTEM_REQUIRED | ExecutionState.EXECUTION_STATE.ES_AWAYMODE_REQUIRED);
             } // give the system some coffee so it stays awake when tired using some fancy EXECUTION_STATE flags
 
             ExceptionHandler.LogEvent("[Countdown] Entering countdown sequence...");
@@ -235,10 +257,10 @@ namespace ShutdownTimer
             }
             else if (!allowClose)
             {
-                e.Cancel = true;
+                e.Cancel = true; // Ignore closing event
                 ExceptionHandler.LogEvent("[Countdown] Asking user for confirmation to exit and cancel the timer");
-                string caption = "Are you sure?";
-                string message = "Do you really want to cancel the timer?";
+                string caption = "Confirm";
+                string message = "Cancel the timer and close the app?";
                 DialogResult question = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (question == DialogResult.Yes) { ExceptionHandler.LogEvent("[Countdown] User wanted to exit"); ExitApplication(); }
             }
@@ -274,10 +296,10 @@ namespace ShutdownTimer
                 refreshTimer.Stop();
                 ExceptionHandler.LogEvent("[Countdown] Clearing EXECUTION_STATE flags");
                 ExecutionState.SetThreadExecutionState(ExecutionState.EXECUTION_STATE.ES_CONTINUOUS); // Clear EXECUTION_STATE flags to allow the system to go to sleep if it's tired
-                ExceptionHandler.LogEvent("[Countdown] Confirming application halt to user");
-                string caption1 = "Timer canceled";
-                string message1 = "Your timer was canceled successfully!\nThe application will now close.";
-                MessageBox.Show(message1, caption1, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //ExceptionHandler.LogEvent("[Countdown] Confirming application halt to user");
+                //string caption1 = "Timer canceled";
+                //string message1 = "Your timer was canceled successfully!\nThe application will now close.";
+                //MessageBox.Show(message1, caption1, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ExceptionHandler.LogEvent("[Countdown] Exiting...");
                 Application.Exit();
             }
@@ -331,7 +353,11 @@ namespace ShutdownTimer
                 stopwatch.Start();
                 ExceptionHandler.LogEvent("[Countdown] Updating UI");
                 UpdateUI(CountdownTimeSpan);
-                if (this.WindowState == FormWindowState.Minimized) { notifyIcon.BalloonTipText = "Timer restarted. The power action will be executed in " + CountdownTimeSpan.Hours + " hours, " + CountdownTimeSpan.Minutes + " minutes and " + CountdownTimeSpan.Seconds + " seconds."; notifyIcon.ShowBalloonTip(10000); }
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    notifyIcon.BalloonTipText = "Timer restarted. The power action will be executed in " + CountdownTimeSpan.Hours + " hours, " + CountdownTimeSpan.Minutes + " minutes and " + CountdownTimeSpan.Seconds + " seconds.";
+                    notifyIcon.ShowBalloonTip(10000);
+                }
                 ExceptionHandler.LogEvent("[Countdown] Timer restarted");
             }
         }
@@ -348,6 +374,8 @@ namespace ShutdownTimer
                 refreshTimer.Enabled = false;
                 contextMenuStrip.Items[0].Text = "Resume";
                 titleLabel.Text = Action + " Timer (paused)";
+                this.Text = this.Text + " (paused)";
+                notifyIcon.Text = notifyIcon.Text + " (paused)";
             }
             else
             {
@@ -372,44 +400,47 @@ namespace ShutdownTimer
                 TopMost = false;
                 var result = form.ShowDialog();
                 TopMost = !SettingsProvider.Settings.DisableAlwaysOnTop;
-                if (form.ReturnValue == "")
+                if (result == DialogResult.OK)
                 {
-                    ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to no input");
-                    MessageBox.Show("Operation aborted: You have not supplied a new time value!", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    ExceptionHandler.LogEvent("[Countdown] Parsing supplied input");
-                    try
+                    if (form.ReturnValue == "")
                     {
-                        String[] values = form.ReturnValue.Split(':');
-                        if (values.Length == 2) // HH:mm
-                        {
-                            int newHours = Convert.ToInt32(values[0]);
-                            int newMinutes = Convert.ToInt32(values[1]);
-                            CountdownTimeSpan = new TimeSpan(newHours, newMinutes, 0);
-                            stopwatch.Restart();
-                            ExceptionHandler.LogEvent("[Countdown] Countdown updated using HH:mm");
-                        }
-                        else if (values.Length == 3) // HH:mm:ss
-                        {
-                            int newHours = Convert.ToInt32(values[0]);
-                            int newMinutes = Convert.ToInt32(values[1]);
-                            int newSeconds = Convert.ToInt32(values[2]);
-                            CountdownTimeSpan = new TimeSpan(newHours, newMinutes, newSeconds);
-                            stopwatch.Restart();
-                            ExceptionHandler.LogEvent("[Countdown] Countdown updated using HH:mm:ss");
-                        }
-                        else
-                        {
-                            ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to malformed input");
-                            MessageBox.Show("Operation aborted: You have not supplied a valid time value!", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to no input");
+                        MessageBox.Show("Operation aborted: You have not supplied a new time value!", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    catch (Exception)
+                    else
                     {
-                        ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to error in input processing");
-                        MessageBox.Show("Operation aborted: You have either not supplied a valid time value or there was an internal error outside the scope of your input while processing it.", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ExceptionHandler.LogEvent("[Countdown] Parsing supplied input");
+                        try
+                        {
+                            String[] values = form.ReturnValue.Split(':');
+                            if (values.Length == 2) // HH:mm
+                            {
+                                int newHours = Convert.ToInt32(values[0]);
+                                int newMinutes = Convert.ToInt32(values[1]);
+                                CountdownTimeSpan = new TimeSpan(newHours, newMinutes, 0);
+                                stopwatch.Restart();
+                                ExceptionHandler.LogEvent("[Countdown] Countdown updated using HH:mm");
+                            }
+                            else if (values.Length == 3) // HH:mm:ss
+                            {
+                                int newHours = Convert.ToInt32(values[0]);
+                                int newMinutes = Convert.ToInt32(values[1]);
+                                int newSeconds = Convert.ToInt32(values[2]);
+                                CountdownTimeSpan = new TimeSpan(newHours, newMinutes, newSeconds);
+                                stopwatch.Restart();
+                                ExceptionHandler.LogEvent("[Countdown] Countdown updated using HH:mm:ss");
+                            }
+                            else
+                            {
+                                ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to malformed input");
+                                MessageBox.Show("Operation aborted: You have not supplied a valid time value!", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            ExceptionHandler.LogEvent("[Countdown] Countdown update aborted due to error in input processing");
+                            MessageBox.Show("Operation aborted: You have either not supplied a valid time value or there was an internal error outside the scope of your input while processing it.", "Countdown Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -432,8 +463,8 @@ namespace ShutdownTimer
             TimeSpan currentTimeSpan = CountdownTimeSpan - stopwatch.Elapsed + new TimeSpan(0, 0, 1); // Calculate countdown (add 1 second for smooth start)
             UpdateUI(currentTimeSpan);
 
-            notifyIcon.BalloonTipText = "Timer has been moved to the background. Right-click the tray icon for more info.";
-            notifyIcon.ShowBalloonTip(10000);
+            //notifyIcon.BalloonTipText = "Timer has been moved to the background. Right-click the tray icon for more info.";
+            //notifyIcon.ShowBalloonTip(10000);
         }
 
         /// <summary>
@@ -667,10 +698,14 @@ namespace ShutdownTimer
                 timeLabel.Text = elapsedTime;
                 timeMenuItem.Text = elapsedTime;
 
+                // Update window title and tray hint
+                string titleText = elapsedTime + "  Countdown" + (paused ? " (paused)" : "");
+                if (this.Text != titleText) this.Text = titleText;
+                string hintText = Action + " Timer\n" + titleText;
+                if (notifyIcon.Text != hintText) notifyIcon.Text = hintText;
+
                 if (UI) // UI for countdown window
                 {
-                    this.Text = "Countdown";
-
                     // Decide which color/animation to use
                     if (!SettingsProvider.Settings.DisableAnimations)
                     {
@@ -682,8 +717,6 @@ namespace ShutdownTimer
                 }
                 else // UI for tray menu
                 {
-                    this.Text = "Countdown - " + elapsedTime;
-
                     // Decide which tray message to show
                     if (!SettingsProvider.Settings.DisableNotifications)
                     {
@@ -758,7 +791,7 @@ namespace ShutdownTimer
                     ExitWindows.Lock();
                     break;
 
-                case "Custom Command":
+                case "Command":
                     try
                     {
                         Process.Start(Command);
@@ -777,6 +810,15 @@ namespace ShutdownTimer
             {
                 ExceptionHandler.LogEvent("[Countdown] Clearing EXECUTION_STATE flags");
                 ExecutionState.SetThreadExecutionState(ExecutionState.EXECUTION_STATE.ES_CONTINUOUS); // Clear EXECUTION_STATE flags to allow the system to go to sleep if it's tired.
+            }
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (timerUIShowMenuItem.Enabled) TimerUIShowMenuItem_Click(sender, e);
+                else { this.BringToFront(); this.Activate(); }
             }
         }
     }

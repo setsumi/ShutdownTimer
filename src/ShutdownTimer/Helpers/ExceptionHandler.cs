@@ -21,9 +21,7 @@ namespace ShutdownTimer.Helpers
 
             string message = "An unhandled exception occurred and the application needs to be terminated!\n\n" +
                 "A log file containing information about the process and the error has been saved to your desktop.\n" +
-                "Please create an issue on GitHub and include the contents of this log file to help identify and fix the issue.\n\n" +
-                "GitHub: github.com/lukaslangrock/ShutdownTimerClassic/issues\n" +
-                "Email: lukas.langrock@mailbox.org";
+                "Please create an issue on GitHub and include the contents of this log file to help identify and fix the issue.";
             MessageBox.Show(message, "Shutdown Timer Classic crashed and needs to be terminated!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Process.Start(filepath); // Show log to user
         }
@@ -37,9 +35,7 @@ namespace ShutdownTimer.Helpers
             string message = "A thread exception occurred!\n\n" +
                 "A log file containing information about the process and the error has been saved to your desktop.\n" +
                 "Please create an issue on GitHub and include the contents of this log file to help identify and fix the issue.\n\n" +
-                $"Log file location: {filepath}\n" +
-                "GitHub: github.com/lukaslangrock/ShutdownTimerClassic/issues\n" +
-                "Email: lukas.langrock@mailbox.org\n\n" +
+                $"Log file location: {filepath}\n\n" +
                 "The application experienced a critical error and may very well be broken. It is not recommended to keep using this instance of the application!\n" +
                 "Would you like to terminate the application?";
             DialogResult dialogResult = MessageBox.Show(message, "Shutdown Timer Classic crashed!", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
@@ -76,7 +72,7 @@ namespace ShutdownTimer.Helpers
             {
                 log.Append($"{Application.ProductName}@{Application.ProductVersion.Remove(Application.ProductVersion.LastIndexOf("."))} experienced a critical exception.\n");
                 log.Append("The following data includes information about your system, the exception and the internal state of the application at the time of the exception. You may remove certain information (like your username which may be included in the log) to protect your privacy.\n");
-                log.Append("Please open an issue on https://github.com/lukaslangrock/ShutdownTimerClassic and include the contents of this log file to help identify and fix the issue.\n");
+                log.Append("Please open an issue on https://github.com/setsumi/ShutdownTimer and include the contents of this log file to help identify and fix the issue.\n");
             }
             else
             {

@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.titlebarPictureBox = new System.Windows.Forms.PictureBox();
             this.titleLabel = new System.Windows.Forms.Label();
             this.appLabel = new System.Windows.Forms.Label();
-            this.footerLabel = new System.Windows.Forms.Label();
             this.githubLinkLabel = new System.Windows.Forms.LinkLabel();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -75,19 +75,8 @@
             this.forceFlagRadioButton = new System.Windows.Forms.RadioButton();
             this.forceIfHungFlagRadioButton = new System.Windows.Forms.RadioButton();
             this.forceFlagLabel = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.aboutGroupBox = new System.Windows.Forms.GroupBox();
             this.logButton = new System.Windows.Forms.Button();
-            this.emailbutton = new System.Windows.Forms.Button();
-            this.githubButton = new System.Windows.Forms.Button();
-            this.aboutRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.licenseGroupBox = new System.Windows.Forms.GroupBox();
-            this.faSourceLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.faLicenseLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.faInfoLabel = new System.Windows.Forms.Label();
-            this.appSourceLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.appLicenseLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.appInfoLabel = new System.Windows.Forms.Label();
+            this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.titlebarPictureBox)).BeginInit();
             this.settingsTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -102,9 +91,6 @@
             this.passwordGroupBox.SuspendLayout();
             this.countdownGroupBox.SuspendLayout();
             this.forceFlagGroupBox.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.aboutGroupBox.SuspendLayout();
-            this.licenseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // titlebarPictureBox
@@ -130,30 +116,18 @@
             // 
             this.appLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.appLabel.AutoSize = true;
-            this.appLabel.Location = new System.Drawing.Point(167, 9);
+            this.appLabel.Location = new System.Drawing.Point(152, 9);
             this.appLabel.Name = "appLabel";
             this.appLabel.Size = new System.Drawing.Size(155, 13);
             this.appLabel.TabIndex = 7;
             this.appLabel.Text = "ShutdownTimerClassic@v0.0.0";
             this.appLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // footerLabel
-            // 
-            this.footerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.footerLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.footerLabel.Location = new System.Drawing.Point(12, 478);
-            this.footerLabel.Name = "footerLabel";
-            this.footerLabel.Size = new System.Drawing.Size(310, 18);
-            this.footerLabel.TabIndex = 9;
-            this.footerLabel.Text = "Made with love in Germany";
-            this.footerLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
             // githubLinkLabel
             // 
             this.githubLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.githubLinkLabel.AutoSize = true;
-            this.githubLinkLabel.Location = new System.Drawing.Point(241, 22);
+            this.githubLinkLabel.Location = new System.Drawing.Point(241, 30);
             this.githubLinkLabel.Name = "githubLinkLabel";
             this.githubLinkLabel.Size = new System.Drawing.Size(81, 13);
             this.githubLinkLabel.TabIndex = 10;
@@ -169,11 +143,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTabControl.Controls.Add(this.tabPage1);
             this.settingsTabControl.Controls.Add(this.tabPage2);
-            this.settingsTabControl.Controls.Add(this.tabPage3);
             this.settingsTabControl.Location = new System.Drawing.Point(18, 54);
             this.settingsTabControl.Name = "settingsTabControl";
             this.settingsTabControl.SelectedIndex = 0;
-            this.settingsTabControl.Size = new System.Drawing.Size(304, 421);
+            this.settingsTabControl.Size = new System.Drawing.Size(304, 425);
             this.settingsTabControl.TabIndex = 13;
             // 
             // tabPage1
@@ -185,7 +158,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(296, 395);
+            this.tabPage1.Size = new System.Drawing.Size(296, 399);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Application Settings";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -237,6 +210,7 @@
             this.trayiconThemeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.trayiconThemeComboBox.FormattingEnabled = true;
             this.trayiconThemeComboBox.Items.AddRange(new object[] {
+            "Default",
             "Automatic",
             "Light",
             "Dark"});
@@ -407,9 +381,9 @@
             this.backgroundCheckBox.AutoSize = true;
             this.backgroundCheckBox.Location = new System.Drawing.Point(9, 86);
             this.backgroundCheckBox.Name = "backgroundCheckBox";
-            this.backgroundCheckBox.Size = new System.Drawing.Size(117, 17);
+            this.backgroundCheckBox.Size = new System.Drawing.Size(161, 17);
             this.backgroundCheckBox.TabIndex = 16;
-            this.backgroundCheckBox.Text = "Run in background";
+            this.backgroundCheckBox.Text = "Run minimized to system tray";
             this.backgroundCheckBox.UseVisualStyleBackColor = true;
             // 
             // actionLabel
@@ -434,7 +408,7 @@
             "Sleep",
             "Logout",
             "Lock",
-            "Custom Command"});
+            "Command"});
             this.actionComboBox.Location = new System.Drawing.Point(99, 13);
             this.actionComboBox.Name = "actionComboBox";
             this.actionComboBox.Size = new System.Drawing.Size(147, 21);
@@ -459,7 +433,7 @@
             this.tabPage2.Controls.Add(this.forceFlagGroupBox);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(296, 395);
+            this.tabPage2.Size = new System.Drawing.Size(296, 399);
             this.tabPage2.TabIndex = 2;
             this.tabPage2.Text = "Advanced";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -602,10 +576,10 @@
             this.forceFlagRadioButton.AutoSize = true;
             this.forceFlagRadioButton.Location = new System.Drawing.Point(9, 55);
             this.forceFlagRadioButton.Name = "forceFlagRadioButton";
-            this.forceFlagRadioButton.Size = new System.Drawing.Size(133, 17);
+            this.forceFlagRadioButton.Size = new System.Drawing.Size(92, 17);
             this.forceFlagRadioButton.TabIndex = 16;
             this.forceFlagRadioButton.TabStop = true;
-            this.forceFlagRadioButton.Text = "EWX_FORCEIFHUNG";
+            this.forceFlagRadioButton.Text = "EWX_FORCE";
             this.forceFlagRadioButton.UseVisualStyleBackColor = true;
             // 
             // forceIfHungFlagRadioButton
@@ -613,10 +587,10 @@
             this.forceIfHungFlagRadioButton.AutoSize = true;
             this.forceIfHungFlagRadioButton.Location = new System.Drawing.Point(9, 32);
             this.forceIfHungFlagRadioButton.Name = "forceIfHungFlagRadioButton";
-            this.forceIfHungFlagRadioButton.Size = new System.Drawing.Size(92, 17);
+            this.forceIfHungFlagRadioButton.Size = new System.Drawing.Size(133, 17);
             this.forceIfHungFlagRadioButton.TabIndex = 15;
             this.forceIfHungFlagRadioButton.TabStop = true;
-            this.forceIfHungFlagRadioButton.Text = "EWX_FORCE";
+            this.forceIfHungFlagRadioButton.Text = "EWX_FORCEIFHUNG";
             this.forceIfHungFlagRadioButton.UseVisualStyleBackColor = true;
             // 
             // forceFlagLabel
@@ -628,153 +602,31 @@
             this.forceFlagLabel.TabIndex = 0;
             this.forceFlagLabel.Text = "Changes Windows\' behaviour when forcing a shutdown";
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.aboutGroupBox);
-            this.tabPage3.Controls.Add(this.licenseGroupBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(296, 395);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "About";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // aboutGroupBox
-            // 
-            this.aboutGroupBox.Controls.Add(this.logButton);
-            this.aboutGroupBox.Controls.Add(this.emailbutton);
-            this.aboutGroupBox.Controls.Add(this.githubButton);
-            this.aboutGroupBox.Controls.Add(this.aboutRichTextBox);
-            this.aboutGroupBox.Location = new System.Drawing.Point(6, 61);
-            this.aboutGroupBox.Name = "aboutGroupBox";
-            this.aboutGroupBox.Size = new System.Drawing.Size(284, 328);
-            this.aboutGroupBox.TabIndex = 1;
-            this.aboutGroupBox.TabStop = false;
-            this.aboutGroupBox.Text = "About this app";
-            // 
             // logButton
             // 
-            this.logButton.Location = new System.Drawing.Point(6, 299);
+            this.logButton.Location = new System.Drawing.Point(155, 25);
             this.logButton.Name = "logButton";
             this.logButton.Size = new System.Drawing.Size(80, 23);
-            this.logButton.TabIndex = 17;
+            this.logButton.TabIndex = 18;
             this.logButton.Text = "Create Logfile";
             this.logButton.UseVisualStyleBackColor = true;
             this.logButton.Click += new System.EventHandler(this.LogButton_Click);
             // 
-            // emailbutton
+            // infoToolTip
             // 
-            this.emailbutton.Location = new System.Drawing.Point(112, 299);
-            this.emailbutton.Name = "emailbutton";
-            this.emailbutton.Size = new System.Drawing.Size(60, 23);
-            this.emailbutton.TabIndex = 16;
-            this.emailbutton.Text = "Email";
-            this.emailbutton.UseVisualStyleBackColor = true;
-            this.emailbutton.Click += new System.EventHandler(this.EmailButton_Click);
-            // 
-            // githubButton
-            // 
-            this.githubButton.Location = new System.Drawing.Point(178, 299);
-            this.githubButton.Name = "githubButton";
-            this.githubButton.Size = new System.Drawing.Size(100, 23);
-            this.githubButton.TabIndex = 15;
-            this.githubButton.Text = "GitHub Issues";
-            this.githubButton.UseVisualStyleBackColor = true;
-            this.githubButton.Click += new System.EventHandler(this.GithubButton_Click);
-            // 
-            // aboutRichTextBox
-            // 
-            this.aboutRichTextBox.Location = new System.Drawing.Point(6, 19);
-            this.aboutRichTextBox.Name = "aboutRichTextBox";
-            this.aboutRichTextBox.Size = new System.Drawing.Size(272, 274);
-            this.aboutRichTextBox.TabIndex = 14;
-            this.aboutRichTextBox.Text = resources.GetString("aboutRichTextBox.Text");
-            // 
-            // licenseGroupBox
-            // 
-            this.licenseGroupBox.Controls.Add(this.faSourceLinkLabel);
-            this.licenseGroupBox.Controls.Add(this.faLicenseLinkLabel);
-            this.licenseGroupBox.Controls.Add(this.faInfoLabel);
-            this.licenseGroupBox.Controls.Add(this.appSourceLinkLabel);
-            this.licenseGroupBox.Controls.Add(this.appLicenseLinkLabel);
-            this.licenseGroupBox.Controls.Add(this.appInfoLabel);
-            this.licenseGroupBox.Location = new System.Drawing.Point(6, 6);
-            this.licenseGroupBox.Name = "licenseGroupBox";
-            this.licenseGroupBox.Size = new System.Drawing.Size(284, 49);
-            this.licenseGroupBox.TabIndex = 0;
-            this.licenseGroupBox.TabStop = false;
-            this.licenseGroupBox.Text = "Licenses && Source";
-            // 
-            // faSourceLinkLabel
-            // 
-            this.faSourceLinkLabel.AutoSize = true;
-            this.faSourceLinkLabel.Location = new System.Drawing.Point(194, 29);
-            this.faSourceLinkLabel.Name = "faSourceLinkLabel";
-            this.faSourceLinkLabel.Size = new System.Drawing.Size(65, 13);
-            this.faSourceLinkLabel.TabIndex = 5;
-            this.faSourceLinkLabel.TabStop = true;
-            this.faSourceLinkLabel.Text = "Sourcecode";
-            this.faSourceLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.FASourceLinkLabel_LinkClicked);
-            // 
-            // faLicenseLinkLabel
-            // 
-            this.faLicenseLinkLabel.AutoSize = true;
-            this.faLicenseLinkLabel.Location = new System.Drawing.Point(92, 29);
-            this.faLicenseLinkLabel.Name = "faLicenseLinkLabel";
-            this.faLicenseLinkLabel.Size = new System.Drawing.Size(96, 13);
-            this.faLicenseLinkLabel.TabIndex = 4;
-            this.faLicenseLinkLabel.TabStop = true;
-            this.faLicenseLinkLabel.Text = "CC BY 4.0 License";
-            this.faLicenseLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.FALicenseLinkLabel_LinkClicked);
-            // 
-            // faInfoLabel
-            // 
-            this.faInfoLabel.AutoSize = true;
-            this.faInfoLabel.Location = new System.Drawing.Point(6, 29);
-            this.faInfoLabel.Name = "faInfoLabel";
-            this.faInfoLabel.Size = new System.Drawing.Size(80, 13);
-            this.faInfoLabel.TabIndex = 3;
-            this.faInfoLabel.Text = "Font Awesome:";
-            // 
-            // appSourceLinkLabel
-            // 
-            this.appSourceLinkLabel.AutoSize = true;
-            this.appSourceLinkLabel.Location = new System.Drawing.Point(146, 16);
-            this.appSourceLinkLabel.Name = "appSourceLinkLabel";
-            this.appSourceLinkLabel.Size = new System.Drawing.Size(65, 13);
-            this.appSourceLinkLabel.TabIndex = 2;
-            this.appSourceLinkLabel.TabStop = true;
-            this.appSourceLinkLabel.Text = "Sourcecode";
-            this.appSourceLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AppSourceLinkLabel_LinkClicked);
-            // 
-            // appLicenseLinkLabel
-            // 
-            this.appLicenseLinkLabel.AutoSize = true;
-            this.appLicenseLinkLabel.Location = new System.Drawing.Point(74, 16);
-            this.appLicenseLinkLabel.Name = "appLicenseLinkLabel";
-            this.appLicenseLinkLabel.Size = new System.Drawing.Size(66, 13);
-            this.appLicenseLinkLabel.TabIndex = 1;
-            this.appLicenseLinkLabel.TabStop = true;
-            this.appLicenseLinkLabel.Text = "MIT License";
-            this.appLicenseLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AppLicenseLinkLabel_LinkClicked);
-            // 
-            // appInfoLabel
-            // 
-            this.appInfoLabel.AutoSize = true;
-            this.appInfoLabel.Location = new System.Drawing.Point(6, 16);
-            this.appInfoLabel.Name = "appInfoLabel";
-            this.appInfoLabel.Size = new System.Drawing.Size(62, 13);
-            this.appInfoLabel.TabIndex = 0;
-            this.appInfoLabel.Text = "Application:";
+            this.infoToolTip.AutoPopDelay = 30000;
+            this.infoToolTip.InitialDelay = 500;
+            this.infoToolTip.ReshowDelay = 100;
+            this.infoToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.infoToolTip.ToolTipTitle = "Help";
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 505);
+            this.ClientSize = new System.Drawing.Size(334, 491);
+            this.Controls.Add(this.logButton);
             this.Controls.Add(this.githubLinkLabel);
-            this.Controls.Add(this.footerLabel);
             this.Controls.Add(this.appLabel);
             this.Controls.Add(this.titlebarPictureBox);
             this.Controls.Add(this.titleLabel);
@@ -810,10 +662,6 @@
             this.countdownGroupBox.PerformLayout();
             this.forceFlagGroupBox.ResumeLayout(false);
             this.forceFlagGroupBox.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.aboutGroupBox.ResumeLayout(false);
-            this.licenseGroupBox.ResumeLayout(false);
-            this.licenseGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -824,11 +672,9 @@
         private System.Windows.Forms.PictureBox titlebarPictureBox;
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Label appLabel;
-        private System.Windows.Forms.Label footerLabel;
         private System.Windows.Forms.LinkLabel githubLinkLabel;
         private System.Windows.Forms.TabControl settingsTabControl;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox defaultSettingsGroupBox;
         private System.Windows.Forms.GroupBox customDefaultsGroupBox;
         private System.Windows.Forms.CheckBox rememberStateCheckBox;
@@ -844,17 +690,6 @@
         private System.Windows.Forms.NumericUpDown minutesNumericUpDown;
         private System.Windows.Forms.NumericUpDown secondsNumericUpDown;
         private System.Windows.Forms.Button clearSettingsButton;
-        private System.Windows.Forms.GroupBox licenseGroupBox;
-        private System.Windows.Forms.LinkLabel appLicenseLinkLabel;
-        private System.Windows.Forms.Label appInfoLabel;
-        private System.Windows.Forms.LinkLabel faLicenseLinkLabel;
-        private System.Windows.Forms.Label faInfoLabel;
-        private System.Windows.Forms.LinkLabel appSourceLinkLabel;
-        private System.Windows.Forms.LinkLabel faSourceLinkLabel;
-        private System.Windows.Forms.GroupBox aboutGroupBox;
-        private System.Windows.Forms.Button emailbutton;
-        private System.Windows.Forms.Button githubButton;
-        private System.Windows.Forms.RichTextBox aboutRichTextBox;
         private System.Windows.Forms.GroupBox trayiconGroupBox;
         private System.Windows.Forms.ComboBox trayiconThemeComboBox;
         private System.Windows.Forms.Label trayiconThemeLabel;
@@ -871,7 +706,6 @@
         private System.Windows.Forms.GroupBox passwordGroupBox;
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.CheckBox passwordCheckBox;
-        private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.LinkLabel setBackgroundColorLinkLabel;
         private System.Windows.Forms.CheckBox enableAdaptiveCountdownTextSizeCheckBox;
         private System.Windows.Forms.RadioButton timeOfDayModeRadioButton;
@@ -880,5 +714,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox rememberLastScreenPositionCountdown;
         private System.Windows.Forms.CheckBox rememberLastScreenPositionUI;
+        private System.Windows.Forms.Button logButton;
+        private System.Windows.Forms.ToolTip infoToolTip;
     }
 }

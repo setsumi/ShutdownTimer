@@ -39,15 +39,14 @@ namespace ShutdownTimer
             infoToolTip.SetToolTip(preventSleepCheckBox, "Depending on the power settings of your system, it might go to sleep after certain amount of time due to inactivity." +
                 "\nThis option will keep the system awake to ensure the timer can properly run and execute a shutdown.");
             infoToolTip.SetToolTip(backgroundCheckBox, "This will launch the countdown without a visible window but will show a tray icon in your taskbar.");
+            hoursNumericUpDown.MouseWheel += new MouseEventHandler(NudScrollHandler);
+            minutesNumericUpDown.MouseWheel += new MouseEventHandler(NudScrollHandler);
+            secondsNumericUpDown.MouseWheel += new MouseEventHandler(NudScrollHandler);
+            this.ActiveControl = hoursNumericUpDown;
 
-            ExceptionHandler.LogEvent("[Menu] Setup finished");
-        }
-
-        private void Menu_Shown(object sender, EventArgs e)
-        {
-            ExceptionHandler.LogEvent("[Menu] Showing form");
             // Check for startup arguments
-            if (OverrideSettings) {
+            if (OverrideSettings)
+            {
                 // Apply given setting
                 ExceptionHandler.LogEvent("[Menu] Loading args");
                 LoadArgs();
@@ -59,6 +58,13 @@ namespace ShutdownTimer
                 Application.DoEvents();
                 LoadSettings();
             }
+
+            ExceptionHandler.LogEvent("[Menu] Setup finished");
+        }
+
+        private void Menu_Shown(object sender, EventArgs e)
+        {
+            ExceptionHandler.LogEvent("[Menu] Showing form");
         }
 
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
@@ -88,15 +94,10 @@ namespace ShutdownTimer
 
             if (RunChecks())
             {
-                // Disable controls
                 ExceptionHandler.LogEvent("[Menu] Preparing for countdown start");
-                startButton.Enabled = false;
-                actionGroupBox.Enabled = false;
-                timeGroupBox.Enabled = false;
-
                 SaveSettings();
 
-                if (actionComboBox.Text.Equals("Custom Command"))
+                if (actionComboBox.Text.Equals("Command"))
                 {
                     ExceptionHandler.LogEvent("[Menu] Entering custom command setup");
                     using (var form = new InputBox())
@@ -106,6 +107,20 @@ namespace ShutdownTimer
                             "Note: Execution will use this user's permissions.";
                         ExceptionHandler.LogEvent("[Menu] Requesting custom command from user...");
                         var result = form.ShowDialog();
+                        if (result != DialogResult.OK)
+                        {
+                            ExceptionHandler.LogEvent("[Menu] User have cancelled custom command input, aborting");
+                            return;
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(form.ReturnValue))
+                            {
+                                ExceptionHandler.LogEvent("[Menu] Custom command is empty, warning user and aborting");
+                                MessageBox.Show("Operation aborted: You have not supplied a custom command to execute!", "Custom Command", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
                         ExceptionHandler.LogEvent("[Menu] Saving command");
                         command = form.ReturnValue;
                     }
@@ -128,6 +143,10 @@ namespace ShutdownTimer
                 }
 
                 ExceptionHandler.LogEvent("[Menu] Initiaing countdown start");
+                // Disable controls
+                startButton.Enabled = false;
+                actionGroupBox.Enabled = false;
+                timeGroupBox.Enabled = false;
                 this.Hide();
                 StartCountdown();
             }
@@ -137,6 +156,17 @@ namespace ShutdownTimer
                 ExceptionHandler.LogEvent("[Menu] " + checkResult);
                 MessageBox.Show("The following error(s) occurred:\n\n" + checkResult + "Please try to resolve the(se) problem(s) and try again.", "There seems to be a problem!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Fix mouse wheel as single increment instead of multiple
+        /// </summary>
+        private void NudScrollHandler(object sender, MouseEventArgs e)
+        {
+            NumericUpDown control = (NumericUpDown)sender;
+            ((HandledMouseEventArgs)e).Handled = true;
+            decimal value = control.Value + ((e.Delta > 0) ? control.Increment : -control.Increment);
+            control.Value = Math.Max(control.Minimum, Math.Min(value, control.Maximum));
         }
 
         #endregion

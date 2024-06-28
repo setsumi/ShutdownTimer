@@ -11,8 +11,8 @@ namespace ShutdownTimer.Helpers
         public static SettingsData Settings { get; set; } // current settings
         public static bool SettingsLoaded = false;
         public static bool TemporaryMode = false;
-        private static readonly string settingsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Shutdown Timer Classic";
-        private static readonly string settingsPath = settingsDirectory + "\\settings.json";
+        private static readonly string settingsDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        private static readonly string settingsPath = Path.Combine(settingsDirectory, "settings.json");
 
         public static void Load()
         {
@@ -20,13 +20,6 @@ namespace ShutdownTimer.Helpers
 
             if (!TemporaryMode)
             {
-                // make sure respective appdata dir exists
-                if (!Directory.Exists(settingsDirectory))
-                {
-                    ExceptionHandler.LogEvent("[Settings] Creating settings directory");
-                    Directory.CreateDirectory(settingsDirectory);
-                }
-
                 // make sure settings.json exists
                 if (!File.Exists(settingsPath))
                 {
@@ -73,7 +66,7 @@ namespace ShutdownTimer.Helpers
             if (Settings.TrayIconTheme is null)
             {
                 ExceptionHandler.LogEvent("[Settings] Restoring TrayIconTheme to defaults");
-                Settings.TrayIconTheme = "Automatic";
+                Settings.TrayIconTheme = "Default";
             }
 
             ExceptionHandler.LogEvent("[Settings] Checking field: DefaultTimer");
@@ -159,6 +152,8 @@ namespace ShutdownTimer.Helpers
         public bool PasswordProtection { get; set; }
         public Color BackgroundColor { get; set; }
         public bool AdaptiveCountdownTextSize { get; set; }
+
+        public SettingsData() { ForceIfHungFlag = true; }
     }
 
     public class TimerData
