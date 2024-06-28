@@ -120,7 +120,8 @@ namespace ShutdownTimer.Helpers
                         log.Append($"MD5 Checksum: {hash}\n");
                     }
                 }
-            } catch (Exception ex) { log.Append($"MD5 Checksum: FAIL! {ex.Message}\n"); }
+            }
+            catch (Exception ex) { log.Append($"MD5 Checksum: FAIL! {ex.Message}\n"); }
 
             log.Append("\n\n---- Environment Info ----\n");
             log.Append($"64-bit OS: {Environment.Is64BitOperatingSystem}\n");

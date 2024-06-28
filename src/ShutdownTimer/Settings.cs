@@ -150,7 +150,8 @@ namespace ShutdownTimer
             if (transparentWindowCheckBox.Checked)
             {
                 SettingsProvider.Settings.BackgroundColor = Color.Transparent;
-            } else
+            }
+            else
             {
                 SettingsProvider.Settings.BackgroundColor = Color.Blue;
             }

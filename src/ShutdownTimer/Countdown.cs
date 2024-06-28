@@ -58,7 +58,8 @@ namespace ShutdownTimer
                     BackColor = Color.Black;
                     TransparencyKey = Color.Black;
                     FormBorderStyle = FormBorderStyle.None;
-                } else
+                }
+                else
                 {
                     BackColor = SettingsProvider.Settings.BackgroundColor;
                 }

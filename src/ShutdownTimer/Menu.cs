@@ -330,7 +330,7 @@ namespace ShutdownTimer
                 if (!today) { target = target.AddDays(1); }
                 timeSpan = target.Subtract(DateTime.Now);
             }
-            
+
 
             // Show countdown window
             ExceptionHandler.LogEvent("[Menu] Preparing countdown window...");
@@ -363,7 +363,7 @@ namespace ShutdownTimer
             DateTime now = DateTime.Now;
             DateTime target = new DateTime(now.Year, now.Month, now.Day, hours, minutes, seconds);
 
-            if (target < now) { return false;  } // specified time is in the past (for the current day) -> for tomorrow
+            if (target < now) { return false; } // specified time is in the past (for the current day) -> for tomorrow
             else { return true; } // specified time is in the future -> for today
         }
     }
