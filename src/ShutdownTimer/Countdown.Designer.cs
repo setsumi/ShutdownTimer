@@ -254,6 +254,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Countdown_FormClosing);
             this.Load += new System.EventHandler(this.Countdown_Load);
             this.SizeChanged += new System.EventHandler(this.Countdown_SizeChanged);
+            this.Move += new System.EventHandler(this.Countdown_Move);
             this.contextMenuStrip.ResumeLayout(false);
             this.contextMenuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.titlebarPictureBox)).EndInit();

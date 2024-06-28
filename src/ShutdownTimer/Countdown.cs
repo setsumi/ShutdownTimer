@@ -30,6 +30,7 @@ namespace ShutdownTimer
         private bool paused = false; // used to pause/resume the timer
         private int lockState = 0; // used for Password Protection free/locked/unlocked
         private int logTimerCounter = 0; // used to log events every 10,000 timer ticks
+        private bool formLoading = true; // used to not update form position on Load
 
         public Countdown()
         {
@@ -152,6 +153,7 @@ namespace ShutdownTimer
                 ExecutionState.SetThreadExecutionState(ExecutionState.EXECUTION_STATE.ES_CONTINUOUS | ExecutionState.EXECUTION_STATE.ES_SYSTEM_REQUIRED | ExecutionState.EXECUTION_STATE.ES_AWAYMODE_REQUIRED);
             } // give the system some coffee so it stays awake when tired using some fancy EXECUTION_STATE flags
 
+            formLoading = false;
             ExceptionHandler.LogEvent("[Countdown] Entering countdown sequence...");
         }
 
@@ -233,12 +235,6 @@ namespace ShutdownTimer
         private void SaveSettings()
         {
             ExceptionHandler.LogEvent("[Countdown] Saving settings...");
-
-            SettingsProvider.Settings.LastScreenPositionCountdown = new LastScreenPosition
-            {
-                X = this.Location.X,
-                Y = this.Location.Y
-            };
 
             SettingsProvider.Save();
 
@@ -820,6 +816,18 @@ namespace ShutdownTimer
             {
                 if (timerUIShowMenuItem.Enabled) TimerUIShowMenuItem_Click(sender, e);
                 else { this.BringToFront(); this.Activate(); }
+            }
+        }
+
+        private void Countdown_Move(object sender, EventArgs e)
+        {
+            if (!formLoading && this.WindowState == FormWindowState.Normal)
+            {
+                SettingsProvider.Settings.LastScreenPositionCountdown = new LastScreenPosition
+                {
+                    X = this.Location.X,
+                    Y = this.Location.Y
+                };
             }
         }
     }

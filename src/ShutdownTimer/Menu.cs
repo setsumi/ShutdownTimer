@@ -20,6 +20,7 @@ namespace ShutdownTimer
         private string checkResult;
         private string password; // used for password protection
         private string command; // used for custom command
+        private bool formLoading = true; // used to not update form position on Load
 
         public Menu()
         {
@@ -59,6 +60,7 @@ namespace ShutdownTimer
                 LoadSettings();
             }
 
+            formLoading = false;
             ExceptionHandler.LogEvent("[Menu] Setup finished");
         }
 
@@ -295,12 +297,6 @@ namespace ShutdownTimer
                     SettingsProvider.Settings.DefaultTimer.Seconds = Convert.ToInt32(secondsNumericUpDown.Value);
                 }
 
-                SettingsProvider.Settings.LastScreenPositionUI = new LastScreenPosition
-                {
-                    X = this.Location.X,
-                    Y = this.Location.Y
-                };
-
                 SettingsProvider.Save();
             }
 
@@ -365,6 +361,18 @@ namespace ShutdownTimer
 
             if (target < now) { return false; } // specified time is in the past (for the current day) -> for tomorrow
             else { return true; } // specified time is in the future -> for today
+        }
+
+        private void Menu_Move(object sender, EventArgs e)
+        {
+            if (!formLoading && this.WindowState == FormWindowState.Normal)
+            {
+                SettingsProvider.Settings.LastScreenPositionUI = new LastScreenPosition
+                {
+                    X = this.Location.X,
+                    Y = this.Location.Y
+                };
+            }
         }
     }
 }

@@ -311,6 +311,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Menu_FormClosing);
             this.Load += new System.EventHandler(this.Menu_Load);
             this.Shown += new System.EventHandler(this.Menu_Shown);
+            this.Move += new System.EventHandler(this.Menu_Move);
             ((System.ComponentModel.ISupportInitialize)(this.hoursNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsNumericUpDown)).EndInit();
